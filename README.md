@@ -1,3 +1,3 @@
-# Challenge-2
+# VBA_Stock_Analysis
 
-Challenge 2 Homework
+In this challenge I used VBA scripting to analyze generated stock market data
