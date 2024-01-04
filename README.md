@@ -11,3 +11,5 @@ For each year I looked and found stocks that had the single highest percentege i
 
 In this challenge I was given a data set that yearly stock information.
 
+![Alt text](<Screen Shot 2024-01-03 at 5.34.24 PM.png>)
+
