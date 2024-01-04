@@ -13,7 +13,7 @@ In this challenge I was given a data set with yearly stock information.
 
 ![Alt text](<Screen Shot 2024-01-03 at 5.34.24 PM.png>)
 
-With this information I determined the information above and presented as follows.
+With this information I determined the characterics and trends from above and presented as follows.
 
 ![Alt text](<Screen Shot 2024-01-03 at 6.51.42 PM.png>)
 
