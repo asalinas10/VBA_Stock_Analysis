@@ -1,0 +1,110 @@
+
+Sub StockDataAnalysis()
+    ' Declare variables
+    Dim ws As Worksheet
+    Dim lastRow As Long
+    Dim summaryTableRow As Long
+    Dim i As Long
+    Dim openPrice As Double
+    Dim closePrice As Double
+    Dim yearlyChange As Double
+    Dim percentChange As Double
+    Dim volumeTotal As Double
+    Dim ticker As String
+
+    ' Loop through all sheets
+    For Each ws In ThisWorkbook.Sheets
+        ' Initialize variables
+        lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
+        summaryTableRow = 2
+        volumeTotal = 0
+
+        ' Create column headers
+        With ws
+            .Range("J1").Value = "Ticker"
+            .Range("K1").Value = "Yearly Change"
+            .Range("L1").Value = "Percent Change"
+            .Range("M1").Value = "Total Stock Volume"
+            .Range("Q1").Value = "Ticker"
+            .Range("R1").Value = "Value"
+            .Range("P2:P4").Value = Array("Greatest % Change", "Greatest % Change", "Greatest Total Volume")
+        End With
+
+        ' Loop through rows
+        For i = 2 To lastRow
+            ' Check if the ticker has changed
+            If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+                ' Calculate values
+                ticker = ws.Cells(i, 1).Value
+                closePrice = ws.Cells(i, 6).Value
+                yearlyChange = closePrice - openPrice
+                percentChange = IIf(openPrice <> 0, (yearlyChange / openPrice) * 100, 0)
+                volumeTotal = volumeTotal + ws.Cells(i, 7).Value
+
+                ' Update summary table
+                With ws
+                    .Cells(summaryTableRow, 10).Value = ticker
+                    .Cells(summaryTableRow, 11).Value = yearlyChange
+
+                    ' Color the cell based on yearly change
+                    If yearlyChange < 0 Then
+                        .Cells(summaryTableRow, 11).Interior.ColorIndex = 4 ' Green
+                    ElseIf yearlyChange > 0 Then
+                        .Cells(summaryTableRow, 11).Interior.ColorIndex = 3 ' Red
+                    Else
+                        .Cells(summaryTableRow, 11).Interior.ColorIndex = xlNone ' No color
+                    End If
+
+                    .Cells(summaryTableRow, 12).Value = percentChange
+                    .Cells(summaryTableRow, 13).Value = volumeTotal
+                End With
+
+                ' Update counters
+                summaryTableRow = summaryTableRow + 1
+                volumeTotal = 0
+            Else
+                ' Update volume total if the ticker is the same
+                volumeTotal = volumeTotal + ws.Cells(i, 7).Value
+            End If
+
+            ' Update open price for the next iteration
+            openPrice = ws.Cells(i, 3).Value
+        Next i
+    Next ws
+
+    ' Find and highlight max and min percentage change, and largest total volume
+    For Each ws In ThisWorkbook.Sheets
+        With ws
+            ' Find max and min percentage change
+            Dim maxChange As Double
+            Dim minChange As Double
+            maxChange = WorksheetFunction.Max(.Range("L2:L" & lastRow))
+            minChange = WorksheetFunction.Min(.Range("L2:L" & lastRow))
+
+            ' Highlight cells for max and min percentage change
+            For i = 2 To lastRow
+                If .Cells(i, 12).Value = maxChange Then
+                    .Range("Q2").Value = .Cells(i, 10).Value
+                    .Range("R2").Value = maxChange
+                End If
+
+                If .Cells(i, 12).Value = minChange Then
+                    .Range("Q3").Value = .Cells(i, 10).Value
+                    .Range("R3").Value = minChange
+                End If
+            Next i
+
+            ' Find stock with largest total volume
+            Dim maxVolume As Double
+            maxVolume = WorksheetFunction.Max(.Range("M2:M" & lastRow))
+
+            ' Highlight cell for largest total volume
+            For i = 2 To lastRow
+                If .Cells(i, 13).Value = maxVolume Then
+                    .Range("Q4").Value = .Cells(i, 10).Value
+                    .Range("R4").Value = maxVolume
+                End If
+            Next i
+        End With
+    Next ws
+End Sub
