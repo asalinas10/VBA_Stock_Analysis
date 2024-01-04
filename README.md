@@ -31,3 +31,8 @@ The steps to do this goes as follows:
 
     2. Add functionality to your script to return the stock with the "Greatest % increase", "Greatest % decrease", and "Greatest total volume".
 
+
+* In resources folder are files that contain data. 
+    - alphabetical_testing.xlsm contains test data to test script more quickly
+    - Multiple_year_stock_data.xlsm contains stock data used for project
+
