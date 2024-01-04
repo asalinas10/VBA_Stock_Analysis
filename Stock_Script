@@ -48,9 +48,9 @@ Sub StockDataAnalysis()
 
                     ' Color the cell based on yearly change
                     If yearlyChange < 0 Then
-                        .Cells(summaryTableRow, 11).Interior.ColorIndex = 4 ' Green
-                    ElseIf yearlyChange > 0 Then
                         .Cells(summaryTableRow, 11).Interior.ColorIndex = 3 ' Red
+                    ElseIf yearlyChange > 0 Then
+                        .Cells(summaryTableRow, 11).Interior.ColorIndex = 4 ' Green
                     Else
                         .Cells(summaryTableRow, 11).Interior.ColorIndex = xlNone ' No color
                     End If
