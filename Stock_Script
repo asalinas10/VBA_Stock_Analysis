@@ -27,7 +27,9 @@ Sub StockDataAnalysis()
             .Range("M1").Value = "Total Stock Volume"
             .Range("Q1").Value = "Ticker"
             .Range("R1").Value = "Value"
-            .Range("P2:P4").Value = Array("Greatest % Change", "Greatest % Change", "Greatest Total Volume")
+            .Range("P2").Value = "Greatest % Increase"
+            .Range("P3").Value = "Greatest % Decrease"
+            .Range("P4").Value = "Greatest Total Volume"
         End With
 
         ' Loop through rows
@@ -38,10 +40,11 @@ Sub StockDataAnalysis()
                 ticker = ws.Cells(i, 1).Value
                 closePrice = ws.Cells(i, 6).Value
                 yearlyChange = closePrice - openPrice
-                percentChange = IIf(openPrice <> 0, (yearlyChange / openPrice) * 100, 0)
+                percentChange = (yearlyChange / openPrice) * 100
                 volumeTotal = volumeTotal + ws.Cells(i, 7).Value
 
                 ' Update summary table
+
                 With ws
                     .Cells(summaryTableRow, 10).Value = ticker
                     .Cells(summaryTableRow, 11).Value = yearlyChange
@@ -50,12 +53,14 @@ Sub StockDataAnalysis()
                     If yearlyChange < 0 Then
                         .Cells(summaryTableRow, 11).Interior.ColorIndex = 3 ' Red
                     ElseIf yearlyChange > 0 Then
-                        .Cells(summaryTableRow, 11).Interior.ColorIndex = 4 ' Green
+                        .Cells(summaryTableRow, 11).Interior.ColorIndex = 4 'green
                     Else
                         .Cells(summaryTableRow, 11).Interior.ColorIndex = xlNone ' No color
                     End If
 
-                    .Cells(summaryTableRow, 12).Value = percentChange
+                    ' Format the "Percent Change" column as a percentage rounded to two decimal points
+                    .Cells(summaryTableRow, 12).Value = Format(percentChange, "0.00%")
+
                     .Cells(summaryTableRow, 13).Value = volumeTotal
                 End With
 
