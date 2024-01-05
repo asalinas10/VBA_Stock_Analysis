@@ -40,7 +40,7 @@ Sub StockDataAnalysis()
                 ticker = ws.Cells(i, 1).Value
                 closePrice = ws.Cells(i, 6).Value
                 yearlyChange = closePrice - openPrice
-                percentChange = (yearlyChange / openPrice) * 100
+                percentChange = yearlyChange / openPrice
                 volumeTotal = volumeTotal + ws.Cells(i, 7).Value
 
                 ' Update summary table
